@@ -64,12 +64,21 @@
   background-color: #f7f7f7;
 }
 .loader {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 40px;
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc;
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
 }
 
-.loader.is-hidden {
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.is-hidden {
   display: none;
 }
