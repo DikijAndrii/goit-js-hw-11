@@ -12,7 +12,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 const form = document.querySelector('.form');
 const input = form.querySelector('input[name="search-text"]');
 
-form.addEventListener('submit', async e => {
+form.addEventListener('submit', e => {
   e.preventDefault();
 
   const query = input.value.trim();
@@ -24,19 +24,22 @@ form.addEventListener('submit', async e => {
   clearGallery();
   showLoader();
 
-  try {
-    const data = await getImagesByQuery(query);
-    if (data.hits.length === 0) {
-      iziToast.info({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
-      });
-    } else {
-      createGallery(data.hits);
-    }
-  } catch (error) {
-    iziToast.error({ message: 'Error fetching images. Try again later.' });
-  } finally {
-    hideLoader();
-  }
+  getImagesByQuery(query)
+    .then(data => {
+      if (data.hits.length === 0) {
+        iziToast.info({
+          message:
+            'Sorry, there are no images matching your search query. Please try again!',
+        });
+      } else {
+        createGallery(data.hits);
+      }
+    })
+    .catch(error => {
+      iziToast.error({ message: 'Error fetching images. Try again later.' });
+      console.error(error);
+    })
+    .finally(() => {
+      hideLoader();
+    });
 });
